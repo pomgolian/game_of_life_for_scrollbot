@@ -74,7 +74,7 @@ def create_life_dict(grid_x, grid_y, box_size):
     life_key = 0
     for x in range(0, grid_x, box_size):
         for y in range(0, grid_y, box_size):
-            life[life_key] = 0 # random.randint(0, 1)
+            life[life_key] = random.randint(0, 1)
             life_key += 1
     return life
 
