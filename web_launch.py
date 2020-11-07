@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for
 from threading import Thread
 import time
+from game_of_life import Life, run_life
 
 from werkzeug.utils import redirect
 
@@ -17,11 +18,24 @@ def spawn_async_process():
 
 def my_process(app, my_arg):
     global process_run
-    for x in range(my_arg):
-        if process_run is False:
-            return
-        print("Im running a process {}".format(x))
-        time.sleep(0.5)
+    iterations = 0
+    while process_run:
+        life = 'unique'
+        game = Life(17, 7)
+        while life == 'unique':
+            if game.update_life():  # if this is true, we have a repeating sequence so we can quit current game
+                print('Current game iteration was {}'.format(game.iteration))
+                if game.iteration > iterations:
+                    iterations = game.iteration
+                for key in game.life:
+                    print(game.life[key], end='')
+                    if (key + 1) % 17 == 0:
+                        print('')
+                print('------')
+                life = 'repeating'
+                print('Highest game iterations were {}'.format(iterations))
+                print('------')
+            #time.sleep(0.2)
 
 
 @app.route('/')

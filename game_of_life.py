@@ -3,7 +3,7 @@ import time
 
 
 class Life:
-    def __init__(self, h_boxes=17, v_boxes=7):
+    def __init__(self, h_boxes=17, v_boxes=7): # use a grid of 17 x 7 for scrollbot
         self.life_list = []
         self.iteration = 0
         self.life = {}
@@ -20,7 +20,7 @@ class Life:
 
     def check_repeating_iteration(self, life):
         self.life = life
-        if self.life in self.life_list:
+        if self.life in self.life_list:  # if our life dict has appeared before, we are in a repeating sequence
             return True
         self.life_list.append(self.life)
 
@@ -61,34 +61,33 @@ class Life:
                 new_life[cell] = 0
         self.life = new_life
         self.iteration += 1
-        if self.check_repeating_iteration(self.life):
+        if self.check_repeating_iteration(self.life):  # return true if we have a repeating sequence
             return True
 
 
-game_on = True
+iterations = 0
 
 
-def run_game():
-    global game_on
-    iterations = 0
-    while game_on:
-        life = 'unique'
-        game = Life(17, 7)
-        while life == 'unique':
-            if game.update_life():
-                print('Current game iteration was {}'.format(game.iteration))
-                if game.iteration > iterations:
-                    iterations = game.iteration
-                for key in game.life:
-                    print(game.life[key], end='')
-                    if (key + 1) % 17 == 0:
-                        print('')
-                print('------')
-                life = 'repeating'
-                print('Highest game iterations were {}'.format(iterations))
-                print('------')
-            #time.sleep(0.2)
+def run_life(horizontal, vertical):
+    global iterations
+    life = 'unique'
+    game = Life(horizontal, vertical)
+    while life == 'unique':
+        if game.update_life():  # if this is true, we have a repeating sequence so we can quit current game
+            print('Current game iteration was {}'.format(game.iteration))
+            if game.iteration > iterations:
+                iterations = game.iteration
+            for key in game.life:
+                print(game.life[key], end='')
+                if (key + 1) % horizontal == 0:
+                    print('')
+            print('------')
+            life = 'repeating'
+            print('Highest game iterations were {}'.format(iterations))
+            print('------')
+        #time.sleep(0.2)
 
 
 if __name__ == '__main__':
-    run_game()
+    while True:
+        run_life(17, 7)
