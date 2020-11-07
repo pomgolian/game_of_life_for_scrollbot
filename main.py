@@ -103,17 +103,21 @@ def kill_or_create_life(life):
     new_life = {}
     for cell in life:
         # set our defaults for cell neighbors
-        fw, bw, up, dn = 1, -1, vertical_boxes, -vertical_boxes
+        fw, bw, up, dn = 1, -1, horizontal_boxes, -horizontal_boxes
         # set up our edge cases for cell neighbors
-        if cell%horizontal_boxes == 0:
+        if cell%horizontal_boxes == 0:  # means we are on left edge of grid
             bw = horizontal_boxes - 1
-        if (cell+1)%horizontal_boxes == 0:
+
+        if (cell+1)%horizontal_boxes == 0: # means we are on right edge of grid
             fw = -horizontal_boxes + 1
-        if (cell-vertical_boxes) < 0:
+
+        if (cell-horizontal_boxes) < 0:  # means we are on bottom edge
             dn = (vertical_boxes*horizontal_boxes) - horizontal_boxes
-        if (cell+vertical_boxes) > (vertical_boxes*horizontal_boxes) - 1:
+
+        if (cell+horizontal_boxes) > ((vertical_boxes*horizontal_boxes) - 1): # means we are on the top edge
             up = horizontal_boxes - ((vertical_boxes*horizontal_boxes) - cell) - cell
-        # now we can count the neighbor score
+
+        # now we can count the neighbor score. Have 8 neighbors
         score = life[cell + fw] + life[cell + bw] + life[cell + up] + life[cell + dn] + life[cell + up + fw] + \
                 life[cell + up + bw] + life[cell + dn + fw] + life[cell + dn + bw]
         if score < 2:
@@ -131,8 +135,8 @@ def kill_or_create_life(life):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    horizontal_boxes = 10
-    vertical_boxes = 10
+    horizontal_boxes = 7
+    vertical_boxes = 17
     box_size = 10
     main(horizontal_boxes, vertical_boxes, box_size)
 

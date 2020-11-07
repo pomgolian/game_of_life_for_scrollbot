@@ -3,7 +3,7 @@ import time
 
 
 class Life:
-    def __init__(self, h_boxes=5, v_boxes=5):
+    def __init__(self, h_boxes=17, v_boxes=7):
         self.life_list = []
         self.iteration = 0
         self.life = {}
@@ -69,7 +69,7 @@ def run_game():
     iterations = 0
     while game_on:
         life = 'unique'
-        game = Life(10, 10)
+        game = Life(2, 1)
         while life == 'unique':
             if game.update_life():
                 print('Current game iteration was {}'.format(game.iteration))
@@ -77,13 +77,13 @@ def run_game():
                     iterations = game.iteration
                 for key in game.life:
                     print(game.life[key], end='')
-                    if (key + 1) % 10 == 0:
+                    if (key + 1) % 17 == 0:
                         print('')
                 print('------')
                 life = 'repeating'
                 print('Highest game iterations were {}'.format(iterations))
                 print('------')
-            time.sleep(0.2)
+            #time.sleep(0.2)
 
 
 if __name__ == '__main__':
