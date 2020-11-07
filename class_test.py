@@ -10,8 +10,8 @@ class Life:
         self.horizontal_boxes = h_boxes
         self.vertical_boxes = v_boxes
         self.life_key = 0
-        for x in range(0, self.horizontal_boxes):
-            for y in range(0, self.vertical_boxes):
+        for y in range(0, self.horizontal_boxes):
+            for x in range(0, self.vertical_boxes):
                 self.life[self.life_key] = random.randint(0, 1)
                 self.life_key += 1
 

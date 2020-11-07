@@ -1,21 +1,23 @@
-from flask import Flask
+from flask import Flask, render_template, url_for
 from threading import Thread
 import time
-process_run = True
+
+from werkzeug.utils import redirect
+
+process_run = False
 
 app = Flask(__name__)
 
-number_of_lines = 100
+my_process_arg = 100
 
 
-def print_lines():
-    Thread(target=async_print2, args=(app, number_of_lines)).start()
+def spawn_async_process():
+    Thread(target=my_process, args=(app, my_process_arg)).start()
 
 
-def async_print2(app, number_of_lines):
+def my_process(app, my_arg):
     global process_run
-    process_run = True
-    for x in range(number_of_lines):
+    for x in range(my_arg):
         if process_run is False:
             return
         print("Im running a process {}".format(x))
@@ -24,15 +26,22 @@ def async_print2(app, number_of_lines):
 
 @app.route('/')
 def front_page():
-    print_lines()
-    return 'hello world for test 2'
+    spawn_async_process()
+    return render_template("web_run.html")
 
 
-@app.route('/page2')
-def page2():
+@app.route('/stop')
+def stop():
     global process_run
     process_run = False
-    return 'global changed'
+    return redirect(url_for('front_page'))
+
+
+@app.route('/start')
+def start():
+    global process_run
+    process_run = True
+    return redirect(url_for('front_page'))
 
 
 if __name__ == '__main__':

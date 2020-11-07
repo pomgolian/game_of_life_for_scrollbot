@@ -1,6 +1,7 @@
 import random
 import PySimpleGUI as sg
 import time
+# done at work
 
 
 def main(horizontal_boxes=3, vertical_boxes=3, box_size=10):
@@ -33,8 +34,8 @@ def main(horizontal_boxes=3, vertical_boxes=3, box_size=10):
                 life = kill_or_create_life(life)
                 life_key = 0
                 graph.erase()
-                for x in range(0, grid_x, box_size):
-                    for y in range(0, grid_y, box_size):
+                for y in range(0, grid_y, box_size):
+                    for x in range(0, grid_x, box_size):
                         if life[life_key]:
                             cell_colour = 'yellow'
                         else:
@@ -72,9 +73,9 @@ def main(horizontal_boxes=3, vertical_boxes=3, box_size=10):
 def create_life_dict(grid_x, grid_y, box_size):
     life = {}
     life_key = 0
-    for x in range(0, grid_x, box_size):
-        for y in range(0, grid_y, box_size):
-            life[life_key] = random.randint(0, 1)
+    for y in range(0, grid_y, box_size):
+        for x in range(0, grid_x, box_size):
+            life[life_key] = 0 #random.randint(0, 1)
             life_key += 1
     return life
 
@@ -82,8 +83,8 @@ def create_life_dict(grid_x, grid_y, box_size):
 def create_grid(graph, grid_x, grid_y, box_size, life):
     life_key = 0
     graph.Erase()
-    for x in range(0, grid_x, box_size):
-        for y in range(0, grid_y, box_size):
+    for y in range(0, grid_y, box_size):
+        for x in range(0, grid_x, box_size):
             if life[life_key]:
                 cell_colour = 'yellow'
             else:
