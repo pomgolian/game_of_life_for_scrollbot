@@ -114,7 +114,7 @@ def kill_or_create_life(life):
         if (cell-horizontal_boxes) < 0:  # means we are on bottom edge
             dn = (vertical_boxes*horizontal_boxes) - horizontal_boxes
 
-        if (cell+horizontal_boxes) > ((vertical_boxes*horizontal_boxes) - 1): # means we are on the top edge
+        if (cell+horizontal_boxes) > ((vertical_boxes*horizontal_boxes) - 1):  # means we are on the top edge
             up = horizontal_boxes - ((vertical_boxes*horizontal_boxes) - cell) - cell
 
         # now we can count the neighbor score. Have 8 neighbors

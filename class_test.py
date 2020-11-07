@@ -33,16 +33,20 @@ class Life:
         new_life = {}
         for cell in self.life:
             # set our defaults for cell neighbors
-            fw, bw, up, dn = 1, -1, self.vertical_boxes, -self.vertical_boxes
+            fw, bw, up, dn = 1, -1, self.horizontal_boxes, -self.horizontal_boxes
             # set up our edge cases for cell neighbors
-            if cell % self.horizontal_boxes == 0:
+            if cell % self.horizontal_boxes == 0:  # means we are on left edge of grid
                 bw = self.horizontal_boxes - 1
-            if (cell + 1) % self.horizontal_boxes == 0:
+
+            if (cell + 1) % self.horizontal_boxes == 0:  # means we are on right edge of grid
                 fw = -self.horizontal_boxes + 1
-            if (cell - self.vertical_boxes) < 0:
+
+            if (cell - self.horizontal_boxes) < 0:  # means we are on bottom edge
                 dn = (self.vertical_boxes * self.horizontal_boxes) - self.horizontal_boxes
-            if (cell + self.vertical_boxes) > (self.vertical_boxes * self.horizontal_boxes) - 1:
+
+            if (cell + self.horizontal_boxes) > (self.vertical_boxes * self.horizontal_boxes) - 1:  # means we are on the top edge
                 up = self.horizontal_boxes - ((self.vertical_boxes * self.horizontal_boxes) - cell) - cell
+
             # now we can count the neighbor score
             score = self.life[cell + fw] + self.life[cell + bw] + self.life[cell + up] + self.life[cell + dn] + \
                     self.life[cell + up + fw] + self.life[cell + up + bw] + self.life[cell + dn + fw] + \
@@ -69,7 +73,7 @@ def run_game():
     iterations = 0
     while game_on:
         life = 'unique'
-        game = Life(2, 1)
+        game = Life(17, 7)
         while life == 'unique':
             if game.update_life():
                 print('Current game iteration was {}'.format(game.iteration))
