@@ -1,4 +1,5 @@
 import random
+import scrollphathd as sphd
 import time
 
 
@@ -61,11 +62,33 @@ class Life:
                 new_life[cell] = 0
         self.life = new_life
         self.iteration += 1
-        if self.check_repeating_iteration(self.life):  # return true if we have a repeating sequence
-            return True
+        if self.check_repeating_iteration(self.life):  # return status of the new life
+            return 'repeating'
+        else:
+            return 'unique'
 
 
 iterations = 0
+
+
+def print_grid(current_game):
+    for key in current_game:
+        print(current_game[key], end='')
+        if (key + 1) % 17 == 0:
+            print('')
+    print('------')
+
+
+def display_life(current_game):
+    sphd.clear() # blank the screen
+    for key in current_game: # set our new pixels
+        if current_game[key] == 1: # if 1, then light up the LED
+            # find Y axis value
+            y = key//17
+            # find X axis
+            x = key - (y * 17)
+            sphd.set_pixel(x, y, 0.25)
+    sphd.show() # show the new screen
 
 
 def run_life(horizontal, vertical):
