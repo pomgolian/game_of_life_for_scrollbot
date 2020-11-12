@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 from threading import Thread
 import time
-from game_of_life import Life, run_life
+from game_of_life import Life, display_life
 
 from werkzeug.utils import redirect
 
@@ -9,38 +9,38 @@ process_run = False
 
 app = Flask(__name__)
 
-my_process_arg = 100
+
+def spawn_async_process(process_name):
+    if process_name == 'game_of_life':
+        Thread(target=gol, args=()).start()
 
 
-def spawn_async_process():
-    Thread(target=my_process, args=(app, my_process_arg)).start()
-
-
-def my_process(app, my_arg):
+def gol():
     global process_run
     iterations = 0
-    while process_run:
-        life = 'unique'
-        game = Life(17, 7)
-        while life == 'unique':
-            if game.update_life():  # if this is true, we have a repeating sequence so we can quit current game
-                print('Current game iteration was {}'.format(game.iteration))
-                if game.iteration > iterations:
-                    iterations = game.iteration
-                for key in game.life:
-                    print(game.life[key], end='')
-                    if (key + 1) % 17 == 0:
-                        print('')
-                print('------')
-                life = 'repeating'
-                print('Highest game iterations were {}'.format(iterations))
-                print('------')
-            #time.sleep(0.2)
+    while process_run: # process_run gets set to True from web page submit
+        # the update_life method creates a new life sequence and returns repeating if sequence is repeating.
+        # if we have a repeating sequence, quit current game, and start new game while process_run is true
+        game = Life(17, 7) # create a new game with the size of the LED screen
+        # print('new game created')
+        while game.update_life() == 'unique' and process_run: # keeps looping as long as no repeating patterns
+            # print_grid(game.life)
+            display_life(game.life) # send the current game to display on the LED screen
+            time.sleep(.5) # leave the display for a split second before refreshing
+
+        if game.update_life() == 'repeating': # end of game, patterns are now repeating
+            print('Current game iteration was {}'.format(game.iteration))
+            if game.iteration > iterations:
+                iterations = game.iteration
+            print('Highest game iterations were {}'.format(iterations))
+            print('------')
+        time.sleep(2)
 
 
 @app.route('/')
 def front_page():
-    spawn_async_process()
+    my_process = 'game_of_life'
+    spawn_async_process(my_process)
     return render_template("web_run.html")
 
 
