@@ -27,7 +27,7 @@ def gol():
             # print_grid(game.life)
             display_life(game.life) # send the current game to display on the LED screen
             time.sleep(.5) # leave the display for a split second before refreshing
-
+        # todo display the stats for each game before starting a new game.
         if game.update_life() == 'repeating': # end of game, patterns are now repeating
             print('Current game iteration was {}'.format(game.iteration))
             if game.iteration > iterations:

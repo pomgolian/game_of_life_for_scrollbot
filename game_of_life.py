@@ -108,7 +108,7 @@ def run_life(horizontal, vertical):
             life = 'repeating'
             print('Highest game iterations were {}'.format(iterations))
             print('------')
-        #time.sleep(0.2)
+        time.sleep(0.2)
 
 
 if __name__ == '__main__':
