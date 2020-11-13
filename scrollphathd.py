@@ -10,3 +10,11 @@ def set_pixel(x, y, z):
 
 def show():
     print('executed a show command')
+
+
+def write_string(string):
+    print(string)
+
+
+def scroll(pixesl):
+    pass

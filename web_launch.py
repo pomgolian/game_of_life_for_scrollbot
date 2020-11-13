@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request
 from threading import Thread
 import time
 from game_of_life import Life, display_life
+import scrollphathd as sphd
 
 from werkzeug.utils import redirect
 
@@ -34,14 +35,25 @@ def gol():
             # print_grid(game.life)
             display_life(game.life) # send the current game to display on the LED screen
             time.sleep(.5) # leave the display for a split second before refreshing
-        # todo display the stats for each game before starting a new game.
+        # display the stats for each game before starting a new game.
         if game.update_life() == 'repeating': # end of game, patterns are now repeating
-            print('Current game iteration was {}'.format(game.iteration))
+            sleep_time = 5.0 # time in seconds
+            update_time = 0.05 # scroll speed in seconds per pixel
+            sphd.write_string('Current game iteration was {}'.format(game.iteration))
+            for t in range(int(sleep_time/update_time)):
+                sphd.show()
+                sphd.scroll(1)
+                time.sleep(update_time)
+
             if game.iteration > iterations:
                 iterations = game.iteration
-            print('Highest game iterations were {}'.format(iterations))
-            print('------')
-        time.sleep(2)
+
+            sphd.write_string('Highest game iterations were {}'.format(iterations))
+            for t in range(int(sleep_time/update_time)):
+                sphd.show()
+                sphd.scroll(1)
+                time.sleep(update_time)
+        time.sleep(1)
     process_spawned = False
 
 
@@ -50,12 +62,8 @@ def front_page():
     global process_status
     global process_spawned
     my_process = 'game_of_life'
-    print('process is {}'.format(process_spawned))
     if process_spawned is False and process_status == 'running':
-        print('spawned a process')
         spawn_async_process(my_process)
-    else:
-        print('did not spawn')
     return render_template("web_run.html", process_status=process_status)
 
 
