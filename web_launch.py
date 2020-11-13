@@ -5,9 +5,14 @@ from game_of_life import Life, display_life
 
 from werkzeug.utils import redirect
 
-process_run = False
-
 app = Flask(__name__)
+
+if 'process_status' not in globals():
+    process_status = 'stopped'
+
+
+if 'process_spawned' not in globals():
+    process_spawned = False
 
 
 def spawn_async_process(process_name):
@@ -16,14 +21,16 @@ def spawn_async_process(process_name):
 
 
 def gol():
-    global process_run
+    global process_status
+    global process_spawned
+    process_spawned = True
     iterations = 0
-    while process_run: # process_run gets set to True from web page submit
+    while process_status == 'running': # process_run gets set to running from web page submit
         # the update_life method creates a new life sequence and returns repeating if sequence is repeating.
         # if we have a repeating sequence, quit current game, and start new game while process_run is true
         game = Life(17, 7) # create a new game with the size of the LED screen
         # print('new game created')
-        while game.update_life() == 'unique' and process_run: # keeps looping as long as no repeating patterns
+        while game.update_life() == 'unique' and process_status == 'running': # keeps looping as long as no repeating patterns
             # print_grid(game.life)
             display_life(game.life) # send the current game to display on the LED screen
             time.sleep(.5) # leave the display for a split second before refreshing
@@ -35,28 +42,36 @@ def gol():
             print('Highest game iterations were {}'.format(iterations))
             print('------')
         time.sleep(2)
+    process_spawned = False
 
 
 @app.route('/')
 def front_page():
+    global process_status
+    global process_spawned
     my_process = 'game_of_life'
-    spawn_async_process(my_process)
-    return render_template("web_run.html")
+    print('process is {}'.format(process_spawned))
+    if process_spawned is False and process_status == 'running':
+        print('spawned a process')
+        spawn_async_process(my_process)
+    else:
+        print('did not spawn')
+    return render_template("web_run.html", process_status=process_status)
 
 
 @app.route('/stop')
 def stop():
-    global process_run
-    process_run = False
+    global process_status
+    process_status = 'stopped'
     return redirect(url_for('front_page'))
 
 
 @app.route('/start')
 def start():
-    global process_run
-    process_run = True
+    global process_status
+    process_status = 'running'
     return redirect(url_for('front_page'))
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='127.0.0.1')
