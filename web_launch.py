@@ -1,8 +1,8 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for
 from threading import Thread
 import time
-from game_of_life import Life, display_life
-import scrollphathd as sphd
+from game_of_life import Life, display_life, display_scroll_text
+
 
 from werkzeug.utils import redirect
 
@@ -37,22 +37,11 @@ def gol():
             time.sleep(.5) # leave the display for a split second before refreshing
         # display the stats for each game before starting a new game.
         if game.update_life() == 'repeating': # end of game, patterns are now repeating
-            sleep_time = 5.0 # time in seconds
-            update_time = 0.05 # scroll speed in seconds per pixel
-            sphd.write_string('Current game iteration was {}'.format(game.iteration))
-            for t in range(int(sleep_time/update_time)):
-                sphd.show()
-                sphd.scroll(1)
-                time.sleep(update_time)
-
+            display_scroll_text('Current game iteration was {}'.format(game.iteration), 5)
             if game.iteration > iterations:
                 iterations = game.iteration
 
-            sphd.write_string('Highest game iterations were {}'.format(iterations))
-            for t in range(int(sleep_time/update_time)):
-                sphd.show()
-                sphd.scroll(1)
-                time.sleep(update_time)
+            display_scroll_text('Highest game iterations were {}'.format(iterations), 5)
         time.sleep(1)
     process_spawned = False
 

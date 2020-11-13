@@ -68,15 +68,7 @@ class Life:
             return 'unique'
 
 
-iterations = 0
-
-
-def print_grid(current_game):
-    for key in current_game:
-        print(current_game[key], end='')
-        if (key + 1) % 17 == 0:
-            print('')
-    print('------')
+# iterations = 0
 
 
 def display_life(current_game):
@@ -91,26 +83,30 @@ def display_life(current_game):
     sphd.show() # show the new screen
 
 
-def run_life(horizontal, vertical):
-    global iterations
-    life = 'unique'
-    game = Life(horizontal, vertical)
-    while life == 'unique':
-        if game.update_life():  # if this is true, we have a repeating sequence so we can quit current game
-            print('Current game iteration was {}'.format(game.iteration))
-            if game.iteration > iterations:
-                iterations = game.iteration
-            for key in game.life:
-                print(game.life[key], end='')
-                if (key + 1) % horizontal == 0:
-                    print('')
-            print('------')
-            life = 'repeating'
-            print('Highest game iterations were {}'.format(iterations))
-            print('------')
-        time.sleep(0.2)
+def display_scroll_text(text, display_time=5):
+    update_time = 0.05  # scroll speed in seconds per pixel
+    sphd.write_string(text)
+    for t in range(int(display_time / update_time)):
+        sphd.show()
+        sphd.scroll(1)
+        time.sleep(update_time)
 
 
-if __name__ == '__main__':
-    while True:
-        run_life(17, 7)
+# def run_life(horizontal, vertical):
+#     global iterations
+#     life = 'unique'
+#     game = Life(horizontal, vertical)
+#     while life == 'unique':
+#         if game.update_life():  # if this is true, we have a repeating sequence so we can quit current game
+#             print('Current game iteration was {}'.format(game.iteration))
+#             if game.iteration > iterations:
+#                 iterations = game.iteration
+#             for key in game.life:
+#                 print(game.life[key], end='')
+#                 if (key + 1) % horizontal == 0:
+#                     print('')
+#             print('------')
+#             life = 'repeating'
+#             print('Highest game iterations were {}'.format(iterations))
+#             print('------')
+#         time.sleep(0.2)
