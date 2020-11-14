@@ -1,6 +1,8 @@
 import random
 import scrollphathd as sphd
 import time
+sphd.rotate(180)  # flip the screen for a scrollbot
+sphd.set_brightness(0.25)  # set a default brightness at 25%
 
 
 class Life:
@@ -68,9 +70,6 @@ class Life:
             return 'unique'
 
 
-# iterations = 0
-
-
 def display_life(current_game):
     sphd.clear() # blank the screen
     for key in current_game: # set our new pixels
@@ -79,34 +78,15 @@ def display_life(current_game):
             y = key//17
             # find X axis
             x = key - (y * 17)
-            sphd.set_pixel(x, y, 0.25)
-    sphd.show() # show the new screen
+            sphd.set_pixel(x, y, 1)  # set a brightness of 1 seeing as our default is already .25 and it is cumulative
+    sphd.show()  # show the new screen
 
 
 def display_scroll_text(text, display_time=5):
     update_time = 0.05  # scroll speed in seconds per pixel
+    sphd.clear()  # blank the screen ready to write some text
     sphd.write_string(text)
     for t in range(int(display_time / update_time)):
         sphd.show()
         sphd.scroll(1)
         time.sleep(update_time)
-
-
-# def run_life(horizontal, vertical):
-#     global iterations
-#     life = 'unique'
-#     game = Life(horizontal, vertical)
-#     while life == 'unique':
-#         if game.update_life():  # if this is true, we have a repeating sequence so we can quit current game
-#             print('Current game iteration was {}'.format(game.iteration))
-#             if game.iteration > iterations:
-#                 iterations = game.iteration
-#             for key in game.life:
-#                 print(game.life[key], end='')
-#                 if (key + 1) % horizontal == 0:
-#                     print('')
-#             print('------')
-#             life = 'repeating'
-#             print('Highest game iterations were {}'.format(iterations))
-#             print('------')
-#         time.sleep(0.2)
