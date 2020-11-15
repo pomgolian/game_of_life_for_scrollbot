@@ -17,6 +17,7 @@ class Life:
             for x in range(0, self.vertical_boxes):
                 self.life[self.life_key] = random.randint(0, 1)
                 self.life_key += 1
+        self.initial_sequence = self.life  # keep the initial sequence so can be shelved if it is a winning starter
 
     def __repr__(self):
         return 'creates dictionary called life containing\n1s and 0s representing live and dead cells'
