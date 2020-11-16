@@ -1,6 +1,8 @@
 import random
 import scrollphathd as sphd
 import time
+import shelve # for saving our winning game
+
 sphd.rotate(180)  # flip the screen for a scrollbot
 sphd.set_brightness(0.25)  # set a default brightness at 25%
 
@@ -91,3 +93,16 @@ def display_scroll_text(text, display_time=5):
         sphd.show()
         sphd.scroll(1)
         time.sleep(update_time)
+
+
+def save_game(high_score, initial_grid):
+    with shelve.open('best_game', 'c') as shelf:
+        shelf['high_score'] = high_score
+        shelf['initial_grid'] = initial_grid
+
+
+def get_highest_score_game():
+    with shelve.open('best_game', 'r') as shelf:
+        high_score = shelf['high_score']
+        initial_grid = shelf['initial_grid']
+    return high_score, initial_grid
