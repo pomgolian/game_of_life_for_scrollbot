@@ -4,10 +4,6 @@ import time
 from game_of_life import Life, display_life, display_scroll_text, save_game, get_highest_score_game
 from werkzeug.utils import redirect
 
-# todo add dropdown list to select more apps
-# todo save highest iterations score to HDD for persistance
-# todo save initiation sequence for the highest iteration score to HDD and allow replay
-
 
 app = Flask(__name__)
 
