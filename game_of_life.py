@@ -3,6 +3,7 @@ import scrollphathd as sphd
 import time
 import shelve # for saving our winning game
 
+
 sphd.rotate(180)  # flip the screen for a scrollbot
 sphd.set_brightness(0.25)  # set a default brightness at 25%
 
