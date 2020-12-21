@@ -1,7 +1,6 @@
 import random
 import PySimpleGUI as sg
 import time
-# done at work
 
 
 def main(horizontal_boxes=3, vertical_boxes=3, box_size=10):
