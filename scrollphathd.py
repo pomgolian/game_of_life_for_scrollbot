@@ -18,3 +18,12 @@ def write_string(string):
 
 def scroll(pixesl):
     pass
+
+
+def rotate(deg):
+    pass
+
+
+def set_brightness(brightness):
+    pass
+
