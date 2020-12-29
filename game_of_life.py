@@ -4,10 +4,6 @@ import time
 import shelve # for saving our winning game
 
 
-sphd.rotate(180)  # flip the screen for a scrollbot
-sphd.set_brightness(0.25)  # set a default brightness at 25%
-
-
 class Life:
     def __init__(self, h_boxes=17, v_boxes=7): # use a grid of 17 x 7 for scrollbot
         self.life_list = []
